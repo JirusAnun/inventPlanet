@@ -23,8 +23,8 @@ const Battery = (props) => {
       <div
         style={{
           position: "relative",
-          height: "50vw",
-          width: "50vw",
+          height: "40vw",
+          width: "40vw",
           maxWidth: "180px",
           maxHeight: "180px",
           backgroundColor: "rgba(128,128,128,0.5)", // Add this line
@@ -38,8 +38,11 @@ const Battery = (props) => {
         <div
           style={{
             position: "absolute",
-            height: "100%",
-            width: "100%",
+            height: "40vw",
+            width: "40vw",
+            maxWidth: "180px",
+            maxHeight: "180px",
+
             background: `linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) ${percentage}% , #1CB5E0 ${percentage}%, #000851 100%)`,
             borderRadius: "50%",
           }}
@@ -213,6 +216,7 @@ function App() {
                 marginBottom: "5%",
                 textAlign: "center",
                 fontWeight: 500,
+                padding : "5%"
               }}
             >
               Battery percent
@@ -244,6 +248,8 @@ function App() {
                 marginBottom: "5%",
                 textAlign: "center",
                 fontWeight: 500,
+                padding : "5%",
+                paddingTop : "15%"
               }}
             >
               On/Off
