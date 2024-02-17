@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import { CssBaseline } from "@mui/material";
 import "./gradiant.css";
 import axios from "axios";
+import { useEffect } from "react";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -67,7 +68,7 @@ const Battery = (props) => {
 };
 
 const PrioritySelect = (props) => {
-  const [score, setScore] = React.useState("");
+  const [score, setScore] = React.useState(props.status);
 
   const handleChange = async (event) => {
     setScore(event.target.value);
@@ -143,6 +144,7 @@ const PrioritySelect = (props) => {
           <MenuItem value={3}>3</MenuItem>
           <MenuItem value={4}>4</MenuItem>
           <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
         </Select>
       </FormControl>
     </div>
@@ -150,11 +152,26 @@ const PrioritySelect = (props) => {
 };
 
 function App() {
-  const statusList = [0, 1, 1, 0, 1, 0];
   const [batteryRemain, setBatteryRemain] = useState(70);
   const [remain, setRemain] = useState(0);
+  const [statusList, setStatusList] = useState([]);
 
-  useState(() => {
+  useEffect(() => {
+    axios.get("https://invfp-demo.onrender.com/test").then((res) => {
+      const data = res.data;
+      setStatusList([
+        data.soc1,
+        data.soc2,
+        data.soc3,
+        data.soc4,
+        data.soc5,
+        data.soc6,
+      ]);
+      console.log(data);
+    });
+  }, []);
+
+  useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
       if (i <= batteryRemain) {
@@ -216,7 +233,7 @@ function App() {
                 marginBottom: "5%",
                 textAlign: "center",
                 fontWeight: 500,
-                padding : "5%"
+                padding: "5%",
               }}
             >
               Battery percent
@@ -248,8 +265,8 @@ function App() {
                 marginBottom: "5%",
                 textAlign: "center",
                 fontWeight: 500,
-                padding : "5%",
-                paddingTop : "15%"
+                padding: "5%",
+                paddingTop: "15%",
               }}
             >
               On/Off
@@ -298,13 +315,11 @@ function App() {
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            {Array(6)
-              .fill(0)
-              .map((_, i) => (
-                <Grid item xs={2} sm={4} md={4} key={i}>
-                  <PrioritySelect slot={i + 1} status={statusList[i]} />
-                </Grid>
-              ))}
+            {statusList.map((status, i) => (
+              <Grid item xs={2} sm={4} md={4} key={i}>
+                <PrioritySelect slot={i + 1} status={status} />
+              </Grid>
+            ))}
           </Grid>
         </div>
       </div>
